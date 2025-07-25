@@ -1,100 +1,70 @@
 # MVP SCOPE
-## Feature: User Registration & Login (Custom Auth)
+## Feature: Collection-First Dashboard & Visual Layout
 
 ### Description 
 
- Secure sign-up and login with username, email, and password (no third-party auth). Account lockout, password strength, and session management.
+ Dashboard showing stamp and collection lists with large image previews, key metrics, and search/filter.
 
  ###Scope 
 
- Covers all flows for user registration, login, session management, and password security using a custom backend authentication system. Includes unique username/email enforcement, password hashing, account lockout after failed attempts, and secure session tokens.
-
-## Feature: Collection-First Layout & Visual Hierarchy
-
-### Description 
-
- Visually-focused dashboard and item screens, with stamp images as the hero content. Progressive disclosure of detailed metadata and cataloging info.
-
- ###Scope 
-
- All main collection, item, and dashboard screens prioritize stamp images and key metadata. Uses a visual hierarchy and progressive disclosure for advanced details. Adheres to brand color palette and mobile-first design.
+ Includes all main collection, item, and dashboard screens for web and mobile. Prioritizes stamp images, key metadata, and progressive disclosure of details. Adheres to brand color palette and typography. Supports visual hierarchy and fallback for missing images.
 
 ## Feature: Responsive Navigation
 
 ### Description 
 
- Device-optimized navigation (sidebar for desktop/tablet, bottom tab bar for mobile). Easy access to dashboard, collections, sales, and settings.
+ Device-optimized navigation (sidebar for desktop/tablet, bottom bar for mobile) for dashboard, collections, sales, and settings.
 
  ###Scope 
 
- Implements navigation patterns that adapt to desktop, tablet, and mobile. Includes persistent/collapsible sidebars and bottom tab bars, with accessible icons and labels for all major app sections.
+ Covers navigation to all MVP sections (dashboard, collections, item details, sales, settings) on desktop, tablet, mobile. Ensures accessible, icon-based navigation, adapting layout per device. Supports touch and keyboard input.
 
-## Feature: Add Stamp with Detailed Information
+## Feature: Add Stamp Workflow
 
 ### Description 
 
- Add new stamps with high-res images, metadata, purchase details, and catalog fields. Support for multiple images and advanced cataloging.
+ Add new stamps with high-res images, detailed metadata, purchase details, and cataloging fields.
 
  ###Scope 
 
- Allows users to add new stamps with comprehensive metadata, multiple high-res images, purchase details, and catalog fields. Validates required fields and supports image upload/optimization.
+ Allows users to add a new stamp with all relevant cataloging, valuation, and transaction details. Supports high-res image uploads (multiple angles), metadata, and purchase info. Validates fields and supports multi-currency.
 
-## Feature: Dashboard: Lists, Metrics & Search
+## Feature: Image Upload & Optimization
 
 ### Description 
 
- View and search stamps/collections. See key metrics (total spent, earned, budget, collection size). Quick access to transaction details.
+ Upload, optimize, and display multiple high-res images per stamp (front, back, angle), with zoom and thumbnail support.
 
  ###Scope 
 
- Dashboard displays searchable/filterable lists of stamps/collections, key metrics widgets, and transaction details. Supports fast search, advanced filters, and click-through to details.
+ Supports high-res, multi-angle image uploads, optimized storage, and fast viewing. Converts to WebP, generates thumbnails, and provides zoom. Enforces size/format limits and image validation.
 
-## Feature: Budget Configuration & Monitoring
+## Feature: Purchase Workflow
 
 ### Description 
 
- Set and adjust spending limits (weekly, monthly, etc.). Visual alerts when approaching/exceeding budget.
+ Log purchases of stamps/collections with full financial and catalog details, auto-update of budget metrics.
 
  ###Scope 
 
- Users can set and monitor budgets for stamp purchases, with visual indicators and alerts when approaching or exceeding limits. Integrated with purchase workflow and dashboard metrics.
+ Enables users to record purchases with all financial and catalog details. Integrates with budget tracking, supports CSV/Excel import, and updates metrics automatically.
 
-## Feature: Purchase & Sale Workflows
+## Feature: Sale Workflow
 
 ### Description 
 
- Record purchases and sales of stamps/collections. Track profit/loss, update inventory, and import/export transactions.
+ Record sales (full/partial) of stamps/collections, including profit/loss and inventory updates.
 
  ###Scope 
 
- Supports entry and management of purchase and sale transactions for stamps/collections. Calculates profit/loss, updates inventory, and allows import/export of transaction data.
+ Allows users to log sales (full/partial) with all financial details, updates inventory and profit/loss metrics, and supports import/export. Handles residual value and confirmation flows.
 
-## Feature: Image Upload, Storage & Optimization
+## Feature: Budget Configuration & Alerts
 
 ### Description 
 
- Upload, view, and manage high-res images for each stamp. Image optimization for fast loading and zoom features.
+ Set and monitor spending limits (weekly, monthly, etc.), with alerts when approaching/exceeding limits.
 
  ###Scope 
 
- Enables users to upload, view, and manage multiple high-res images per stamp. Images are optimized for web performance, with support for zoom and fast loading.
-
-## Feature: Theme & Accessibility
-
-### Description 
-
- Modern, eye-friendly color palette. Accessibility features (keyboard navigation, screen reader support).
-
- ###Scope 
-
- Applies a modern, branded color palette and ensures accessibility across all screens. Includes keyboard navigation, screen reader support, and compliance with accessibility standards.
-
-## Feature: Guided Onboarding
-
-### Description 
-
- Step-by-step onboarding for new users. Tips and walkthroughs for first-time setup and cataloging.
-
- ###Scope 
-
- Provides a guided onboarding flow for new users, including step-by-step instructions, tooltips, and walkthroughs for initial setup and adding the first stamp or collection.
+ Lets users set, adjust, and monitor spending limits. Triggers visual alerts when limits are approached/exceeded, integrates with purchase workflow, and persists settings per user.
