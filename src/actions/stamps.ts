@@ -2,8 +2,13 @@
 'use server';
 
 import { z } from 'zod';
-import { createSupabaseServerClient } from '@/utils/supabase/server';
-
+// import { createSupabaseServerClient } from '@/utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
+ 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+ 
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const stampSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
   country: z.string().min(2, { message: "Country is required." }),
@@ -24,7 +29,7 @@ const stampSchema = z.object({
 });
 
 export async function addStamp(formData: FormData) {
-  const supabase = await createSupabaseServerClient();
+  // const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {

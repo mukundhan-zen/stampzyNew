@@ -11,13 +11,13 @@ export function StampCard({ stamp }: { stamp: Stamp }) {
       <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer">
         <CardHeader className="p-0">
           <div className="aspect-square relative">
-            <Image
+            {/* <Image
               src={stamp.images[0]?.url || 'https://via.placeholder.com/300'}
               alt={stamp.name}
               layout="fill"
               objectFit="cover"
               className="rounded-t-lg"
-            />
+            /> */}
           </div>
         </CardHeader>
         <CardContent className="p-4">

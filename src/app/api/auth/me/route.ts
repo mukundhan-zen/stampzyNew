@@ -1,33 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'K8m9NpQr7StUvWxYz2A5bCdEfGhJkLmNpQrStUvWxYz2A5bCdEfGhJkLmNpQr7St';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export async function GET(req: NextRequest) {
-  const cookieStore = cookies();
-  const token = cookieStore.get('session_token')?.value;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-  if (!token) {
-    return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
-  }
-
+export async function POST(req: NextRequest) {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const { username, password } = await req.json();
 
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('id, full_name, username, email, created_at')
-      .eq('id', decoded.userId)
-      .single();
+    if (!username || !password) {
+      return NextResponse.json({ message: 'Username and password are required.' }, { status: 400 });
+    }
+    const email = username; // Assuming username is the email for Supabase auth
 
-    if (error || !user) {
-      return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      return NextResponse.json({ message: 'Invalid credentials.' }, { status: 401 });
     }
 
-    return NextResponse.json({ user }, { status: 200 });
+    // Return the user object from Supabase
+    return NextResponse.json({ message: 'Login successful', user: authData.user }, { status: 200 });
+
   } catch (error) {
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    console.error('Login API error:', error);
+    return NextResponse.json({ message: 'An internal server error occurred.' }, { status: 500 });
   }
 }
+ 

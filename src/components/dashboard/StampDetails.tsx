@@ -15,13 +15,13 @@ export function StampDetails({ stamp, children }: { stamp: Stamp, children: Reac
       <SheetContent className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 overflow-y-auto">
         <SheetHeader>
           <div className="aspect-square relative mb-4">
-            <Image
+            {/* <Image
               src={stamp.images[0]?.url || 'https://via.placeholder.com/300'}
               alt={stamp.name}
               layout="fill"
               objectFit="cover"
               className="rounded-lg"
-            />
+            /> */}
           </div>
           <SheetTitle className="text-2xl font-bold">{stamp.name}</SheetTitle>
           <div className="text-md text-gray-500 dark:text-gray-400">{stamp.country}, {stamp.year}</div>
