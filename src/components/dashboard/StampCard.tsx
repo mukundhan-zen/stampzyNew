@@ -1,14 +1,14 @@
 'use client';
 
 import { Stamp } from "@/types";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from 'next/image';
-import Link from "next/link";
+import { StampDetails } from "./StampDetails";
 
 export function StampCard({ stamp }: { stamp: Stamp }) {
   return (
-    <Link href={`/stamps/${stamp.id}`}>
-      <Card className="hover:shadow-lg transition-shadow duration-200">
+    <StampDetails stamp={stamp}>
+      <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer">
         <CardHeader className="p-0">
           <div className="aspect-square relative">
             <Image
@@ -23,8 +23,9 @@ export function StampCard({ stamp }: { stamp: Stamp }) {
         <CardContent className="p-4">
           <CardTitle className="text-lg font-semibold truncate">{stamp.name}</CardTitle>
           <p className="text-sm text-gray-500 dark:text-gray-400">{stamp.country}, {stamp.year}</p>
+          {stamp.value && <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mt-1">Value: ${stamp.value.toFixed(2)}</p>}
         </CardContent>
       </Card>
-    </Link>
+    </StampDetails>
   );
 }
