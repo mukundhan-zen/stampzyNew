@@ -32,7 +32,11 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
-    return redirect("/protected");
+    return encodedRedirect(
+      "success",
+      "/sign-up",
+      "Check your email for a verification link.",
+    );
   }
 };
 

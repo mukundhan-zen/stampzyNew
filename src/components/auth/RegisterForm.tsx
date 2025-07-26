@@ -16,38 +16,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  fullName: z.string().min(2, { message: "Full name must be at least 2 characters." }),
-  username: z.string().min(3, { message: "Username must be at least 3 characters." }),
-  email: z.string().email({ message: "Please enter a valid email." }),
-  password: z.string()
-    .min(8, { message: "Password must be at least 8 characters." })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
-    .regex(/[0-9]/, { message: "Password must contain at least one number." }),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+import { SignUpSchema } from "@/lib/schemas";
 
 export function RegisterForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      fullName: "",
-      username: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof SignUpSchema>) {
     setError(null);
     setSuccess(null);
     try {
@@ -85,14 +69,46 @@ export function RegisterForm() {
           <AlertDescription>{success}</AlertDescription>
         </Alert>
       )}
-      {/* Your form fields go here, for example: */}
-      <Input {...form.register("fullName")} placeholder="Full Name" />
-      <Input {...form.register("email")} placeholder="Email" />
-      <Input {...form.register("username")} placeholder="Username" />
-      <Input {...form.register("password")} type="password" placeholder="Password" />
-      <Input {...form.register("confirmPassword")} type="password" placeholder="Confirm Password" />
-      {/* Add any additional fields as needed */}
-      <Button type="submit" disabled={form.formState.isSubmitting}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
         Register
       </Button>
     </form>

@@ -1,100 +1,79 @@
 # MVP SCOPE
-## Feature: User Registration & Login (Custom Auth)
+## Feature: User Registration & Login (Supabase Auth)
 
 ### Description 
 
- Secure sign-up and login with username, email, and password (no third-party auth). Account lockout, password strength, and session management.
+ Enable users to register and log in securely using Supabase Auth (email/password). Supports standard authentication flows, session management, and email verification.
 
  ###Scope 
 
- Covers all flows for user registration, login, session management, and password security using a custom backend authentication system. Includes unique username/email enforcement, password hashing, account lockout after failed attempts, and secure session tokens.
+ All registration and login flows for web, tablet, and mobile using Supabase Auth. Includes email/password registration, login, secure session management, and email verification. No custom authentication or third-party social logins in MVP.
 
 ## Feature: Collection-First Layout & Visual Hierarchy
 
 ### Description 
 
- Visually-focused dashboard and item screens, with stamp images as the hero content. Progressive disclosure of detailed metadata and cataloging info.
+ A mobile-first, visually engaging layout that prioritizes stamp images and key metadata, with clear visual hierarchy and navigation.
 
  ###Scope 
 
- All main collection, item, and dashboard screens prioritize stamp images and key metadata. Uses a visual hierarchy and progressive disclosure for advanced details. Adheres to brand color palette and mobile-first design.
+ Dashboard, item detail, and list views with stamp images as primary content, key metadata as secondary, and detailed cataloging info as tertiary. Adheres to brand color palette and design guidelines. Progressive disclosure for advanced fields.
 
 ## Feature: Responsive Navigation
 
 ### Description 
 
- Device-optimized navigation (sidebar for desktop/tablet, bottom tab bar for mobile). Easy access to dashboard, collections, sales, and settings.
+ Device-optimized navigation for desktop (sidebar), tablet (collapsible sidebar), and mobile (bottom navigation), with accessible icons and clear routes to all main sections.
 
  ###Scope 
 
- Implements navigation patterns that adapt to desktop, tablet, and mobile. Includes persistent/collapsible sidebars and bottom tab bars, with accessible icons and labels for all major app sections.
+ Navigation adapts to device size and input (touch, keyboard). Includes quick access to dashboard, collections, stamps, sales, and settings. Uses specified iconography and color palette.
 
-## Feature: Add Stamp with Detailed Information
+## Feature: Add Stamp Workflow
 
 ### Description 
 
- Add new stamps with high-res images, metadata, purchase details, and catalog fields. Support for multiple images and advanced cataloging.
+ Allow users to add new stamps with high-resolution images, full metadata, and purchase details.
 
  ###Scope 
 
- Allows users to add new stamps with comprehensive metadata, multiple high-res images, purchase details, and catalog fields. Validates required fields and supports image upload/optimization.
+ Add Stamp form with fields for title, country, year, condition, catalog numbers, denomination, theme, acquisition date, purchase price, seller, taxes, shipping, valuation, notes, and at least 3 high-res images. Supports validation, save-as-draft, and multi-currency.
 
-## Feature: Dashboard: Lists, Metrics & Search
+## Feature: Dashboard: Stamp & Collection Lists, Metrics, and Search
 
 ### Description 
 
- View and search stamps/collections. See key metrics (total spent, earned, budget, collection size). Quick access to transaction details.
+ Dashboard displaying searchable, filterable lists of stamps and collections, plus key collection and financial metrics.
 
  ###Scope 
 
- Dashboard displays searchable/filterable lists of stamps/collections, key metrics widgets, and transaction details. Supports fast search, advanced filters, and click-through to details.
+ Dashboard with tabbed/labeled lists for stamps and collections, search bar, advanced filters, and metric widgets (total spent, earned, budget, profit/loss, collection size). Each stamp entry shows image, title, purchase/sale price, status, and transaction count.
 
-## Feature: Budget Configuration & Monitoring
+## Feature: Data Models for Stamps, Collections, Transactions, and Images
 
 ### Description 
 
- Set and adjust spending limits (weekly, monthly, etc.). Visual alerts when approaching/exceeding budget.
+ Robust backend/database structure for stamps, collections, transactions, and images, supporting all required metadata and relationships.
 
  ###Scope 
 
- Users can set and monitor budgets for stamp purchases, with visual indicators and alerts when approaching or exceeding limits. Integrated with purchase workflow and dashboard metrics.
+ Database schemas for stamps, collections, images, and transactions. Support for multi-image stamps, metadata, purchase/sale transactions, collection grouping, and future extensibility. Enforces user ownership and access control.
 
-## Feature: Purchase & Sale Workflows
+## Feature: Image Upload, Storage, and Optimization
 
 ### Description 
 
- Record purchases and sales of stamps/collections. Track profit/loss, update inventory, and import/export transactions.
+ Support for high-res, multi-angle image uploads per stamp, with optimized storage and fast viewing.
 
  ###Scope 
 
- Supports entry and management of purchase and sale transactions for stamps/collections. Calculates profit/loss, updates inventory, and allows import/export of transaction data.
-
-## Feature: Image Upload, Storage & Optimization
-
-### Description 
-
- Upload, view, and manage high-res images for each stamp. Image optimization for fast loading and zoom features.
-
- ###Scope 
-
- Enables users to upload, view, and manage multiple high-res images per stamp. Images are optimized for web performance, with support for zoom and fast loading.
-
-## Feature: Theme & Accessibility
-
-### Description 
-
- Modern, eye-friendly color palette. Accessibility features (keyboard navigation, screen reader support).
-
- ###Scope 
-
- Applies a modern, branded color palette and ensures accessibility across all screens. Includes keyboard navigation, screen reader support, and compliance with accessibility standards.
-
-## Feature: Guided Onboarding
-
-### Description 
-
- Step-by-step onboarding for new users. Tips and walkthroughs for first-time setup and cataloging.
-
- ###Scope 
-
- Provides a guided onboarding flow for new users, including step-by-step instructions, tooltips, and walkthroughs for initial setup and adding the first stamp or collection.
+ Image upload supports at least 3 images per stamp (front, back, optional angle), max 5MB each, WebP/JPEG only. Images optimized (conversion, resizing, thumbnails), stored securely, and linked to stamp records. Fast loading and zoom supported.
+## USER PREFERENCES:
+Use Supabase Auth for all authentication (no custom or third-party auth in MVP)
+Mobile-first, visually engaging design
+Adhere to provided brand color palette and UI guidelines
+Progressive disclosure for advanced features/fields
+Fast, responsive experience across all devices
+Support for high-res stamp images and detailed metadata
+User privacy and access control enforced
+Multi-currency support for purchases
