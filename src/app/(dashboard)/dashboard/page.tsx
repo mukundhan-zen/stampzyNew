@@ -1,78 +1,99 @@
-import { LogoutButton } from '@/components/auth/LogoutButton';
 import { StampGrid } from '@/components/dashboard/StampGrid';
+import { DashboardMetrics } from '@/components/dashboard/DashboardMetrics';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import { Stamp } from '@/types';
 
+// Sample data for development - this will be replaced with real data from the database
 const sampleStamps: Stamp[] = [
   {
     id: '1',
-    name: 'Penny Black',
+    user_id: '1',
+    collection_id: null,
+    title: 'Penny Black',
     country: 'United Kingdom',
     year: 1840,
-    value: 340,
-    images: [{ id: 'img1', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Penny_black.jpg/800px-Penny_black.jpg', stamp_id: '1', created_at: '' }],
-    condition: 'Mint',
-    user_id: '1',
-    created_at: '',
-    updated_at: ''
+    condition: 'mint',
+    scott_catalog_number: '1',
+    michel_catalog_number: null,
+    stanley_gibbons_catalog_number: null,
+    denomination: '1d',
+    theme_subject: 'Queen Victoria',
+    acquisition_date: '2024-01-15',
+    purchase_price: 340,
+    purchase_currency: 'USD',
+    seller: 'Heritage Auctions',
+    taxes: 0,
+    shipping: 15,
+    current_valuation: 400,
+    valuation_currency: 'USD',
+    valuation_date: '2024-01-01',
+    notes: 'First adhesive postage stamp in the world',
+    is_sold: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
     id: '2',
-    name: 'Inverted Jenny',
+    user_id: '1',
+    collection_id: null,
+    title: 'Inverted Jenny',
     country: 'United States',
     year: 1918,
-    value: 1350000,
-    images: [{ id: 'img2', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Inverted_Jenny.jpg/800px-Inverted_Jenny.jpg', stamp_id: '2', created_at: '' }],
-    condition: 'Used',
-    user_id: '1',
-    created_at: '',
-    updated_at: ''
-  },
-  {
-    id: '3',
-    name: 'Mauritius "Post Office"',
-    country: 'Mauritius',
-    year: 1847,
-    value: 4000000,
-    images: [],
-    condition: 'Mint',
-    user_id: '1',
-    created_at: '',
-    updated_at: ''
-  },
-  {
-    id: '4',
-    name: 'British Guiana 1c Magenta',
-    country: 'British Guiana',
-    year: 1856,
-    value: 9480000,
-    images: [],
-    condition: 'Used',
-    user_id: '1',
-    created_at: '',
-    updated_at: ''
-  },
-    {
-    id: '5',
-    name: 'Treskilling Yellow',
-    country: 'Sweden',
-    year: 1855,
-    value: 2300000,
-    images: [{ id: 'img5', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Treskilling_Yellow.jpg/800px-Treskilling_Yellow.jpg', stamp_id: '5', created_at: '' }],
-    condition: 'Mint',
-    user_id: '1',
-    created_at: '',
-    updated_at: ''
+    condition: 'very_fine',
+    scott_catalog_number: 'C3a',
+    michel_catalog_number: null,
+    stanley_gibbons_catalog_number: null,
+    denomination: '24¢',
+    theme_subject: 'Aviation',
+    acquisition_date: null,
+    purchase_price: 1350000,
+    purchase_currency: 'USD',
+    seller: null,
+    taxes: 0,
+    shipping: 0,
+    current_valuation: 1350000,
+    valuation_currency: 'USD',
+    valuation_date: '2024-01-01',
+    notes: 'Famous error stamp with upside-down airplane',
+    is_sold: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
 ];
 
-
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Collection</h1>
-          <LogoutButton />
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="mt-2 text-muted-foreground">
+            Welcome back! Here's an overview of your stamp collection.
+          </p>
+        </div>
+        <div className="mt-4 sm:mt-0">
+          <Button asChild>
+            <Link href="/add-stamp">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Stamp
+            </Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* Metrics */}
+      <DashboardMetrics />
+
+      {/* Recent Stamps */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-foreground">Recent Stamps</h2>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/stamps">View All</Link>
+          </Button>
         </div>
         <StampGrid stamps={sampleStamps} />
       </div>

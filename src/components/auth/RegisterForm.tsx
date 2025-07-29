@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,59 +15,102 @@ import {
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
-import { SignUpSchema } from "@/lib/schemas";
+import { SignUpSchema, SignUpFormData } from "@/lib/schemas";
+import { supabase } from "@/lib/supabase";
 
 export function RegisterForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const form = useForm<z.infer<typeof SignUpSchema>>({
+  const form = useForm<SignUpFormData>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
+      fullName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof SignUpSchema>) {
+  async function onSubmit(values: SignUpFormData) {
     setError(null);
     setSuccess(null);
+    
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Sign up with Supabase Auth
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            full_name: values.fullName,
+            username: values.username,
+          },
         },
-        body: JSON.stringify(values),
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+
+      if (signUpError) {
+        throw signUpError;
       }
-      setSuccess("Registration successful! Redirecting to login...");
-      form.reset();
-      setTimeout(() => router.push('/login'), 2000);
+
+      if (data.user && !data.user.email_confirmed_at) {
+        setSuccess("Registration successful! Please check your email to confirm your account.");
+        form.reset();
+      } else if (data.user) {
+        setSuccess("Registration successful! Redirecting to dashboard...");
+        form.reset();
+        setTimeout(() => router.push('/dashboard'), 2000);
+      }
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message || "An error occurred during registration");
     }
   }
 
   return (
-  <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      {success && (
-        <Alert variant="default">
-          <AlertTitle>Success</AlertTitle>
-          <AlertDescription>{success}</AlertDescription>
-        </Alert>
-      )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {error && (
+          <Alert variant="destructive">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        {success && (
+          <Alert variant="default">
+            <AlertTitle>Success</AlertTitle>
+            <AlertDescription>{success}</AlertDescription>
+          </Alert>
+        )}
+        
+        <FormField
+          control={form.control}
+          name="fullName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Full Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="johndoe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="email"
@@ -76,7 +118,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="you@example.com" {...field} />
+                <Input type="email" placeholder="you@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -108,9 +150,9 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-      <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-        Register
-      </Button>
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Creating Account..." : "Create Account"}
+        </Button>
     </form>
   </Form>
 );}

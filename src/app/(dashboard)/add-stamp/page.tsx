@@ -1,15 +1,20 @@
 
-import { AddStampForm } from "@/components/forms/AddStampForm";
+import { AddStampForm } from '@/components/forms/AddStampForm';
+import { getCollections } from '@/actions/stamps';
 
-export default function AddStampPage() {
+export default async function AddStampPage() {
+  const collections = await getCollections();
+
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Add a New Stamp</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Add New Stamp</h1>
+        <p className="mt-2 text-muted-foreground">
+          Add a new stamp to your collection with detailed information and valuation.
+        </p>
       </div>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <AddStampForm />
-      </div>
+      
+      <AddStampForm collections={collections} />
     </div>
   );
 }

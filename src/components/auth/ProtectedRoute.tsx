@@ -1,36 +1,40 @@
 'use client';
 
-import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
-// A simple loading component
-function LoadingSpinner() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-blue-600"></div>
-    </div>
-  );
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  redirectTo?: string;
 }
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRouteProps) {
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.replace('/login');
+      router.push(redirectTo);
     }
-  }, [isAuthenticated, loading, router]);
+  }, [isAuthenticated, loading, router, redirectTo]);
 
+  // Show loading spinner while checking authentication
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
+  // Don't render children if not authenticated
   if (!isAuthenticated) {
-    // Return null or a loading spinner while redirecting
-    return <LoadingSpinner />;
+    return null;
   }
 
   return <>{children}</>;
 }
+
+// Export as default for backward compatibility
+export default ProtectedRoute;

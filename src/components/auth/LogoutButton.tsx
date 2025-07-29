@@ -1,26 +1,49 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
-export function LogoutButton() {
-  const router = useRouter();
+interface LogoutButtonProps {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+  showIcon?: boolean;
+  showText?: boolean;
+  className?: string;
+}
+
+export function LogoutButton({ 
+  variant = 'outline', 
+  size = 'default',
+  showIcon = true,
+  showText = true,
+  className
+}: LogoutButtonProps) {
+  const { logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-      });
-
-      if (response.ok) {
-        router.push('/login');
-      } else {
-        console.error('Logout failed');
-      }
+      await logout();
     } catch (error) {
-      console.error('An error occurred during logout:', error);
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+  return (
+    <Button
+      variant={variant}
+      size={size}
+      onClick={handleLogout}
+      disabled={isLoggingOut}
+      className={className}
+    >
+      {showIcon && <LogOut className={showText ? "mr-2 h-4 w-4" : "h-4 w-4"} />}
+      {showText && (isLoggingOut ? 'Signing out...' : 'Sign out')}
+    </Button>
+  );
 }
